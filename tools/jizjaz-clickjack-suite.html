@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JIZJAZ Clickjack Suite v2.0 | alif-cybersec</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981; /* Emerald 500 */
+            --primary-glow: rgba(16, 185, 129, 0.4);
+            --bg: #020617; /* Slate 950 */
+            --panel: #0f172a; /* Slate 900 */
+            --panel-light: #1e293b; /* Slate 800 */
+            --text: #f1f5f9; /* Slate 100 */
+            --text-dim: #94a3b8; /* Slate 400 */
+            --danger: #ef4444; /* Red 500 */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Header & Controls */
+        header {
+            background-color: var(--panel);
+            padding: 12px 24px;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.3);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+        }
+
+        .logo {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 16px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .input-group {
+            display: flex;
+            background: #000;
+            border: 1px solid var(--panel-light);
+            border-radius: 6px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+        .input-group:focus-within {
+            border-color: var(--primary);
+        }
+
+        input[type="text"] {
+            background: transparent;
+            border: none;
+            color: var(--text);
+            padding: 8px 12px;
+            width: 280px;
+            outline: none;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+        }
+
+        button {
+            background: var(--primary);
+            color: #020617;
+            border: none;
+            padding: 8px 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+
+        .control-group b {
+            color: var(--primary);
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Range Slider Styling */
+        input[type="range"] {
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Main Lab Area */
+        main {
+            flex: 1;
+            position: relative;
+            background-image: 
+                linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .stage {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            overflow: hidden;
+            border: 1px solid var(--panel-light);
+        }
+
+        /* The Iframe (Target) */
+        #target-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            opacity: 0.5;
+        }
+
+        /* DRAGGABLE FAKE BUTTON */
+        #draggable-bait {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            z-index: 10;
+            cursor: move;
+            padding: 10px;
+            background: rgba(16, 185, 129, 0.05);
+            border: 2px dashed var(--primary);
+            border-radius: 12px;
+            user-select: none;
+            transition: border-color 0.2s;
+        }
+
+        .fake-button {
+            background: var(--danger);
+            color: white;
+            padding: 14px 32px;
+            font-size: 18px;
+            font-weight: 800;
+            border-radius: 8px;
+            border: 4px solid #fff;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            pointer-events: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .helper-text {
+            display: block;
+            font-size: 10px;
+            color: #000;
+            background: #fbbf24; /* Amber 400 */
+            margin-top: 8px;
+            text-align: center;
+            font-weight: 700;
+            padding: 2px;
+            border-radius: 2px;
+            text-transform: uppercase;
+        }
+
+        footer {
+            background: var(--panel);
+            padding: 8px 24px;
+            font-size: 11px;
+            color: var(--text-dim);
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid rgba(16, 185, 129, 0.1);
+            font-family: 'Fira Code', monospace;
+        }
+
+        .status-ready { color: var(--primary); }
+        .status-loading { color: #fbbf24; }
+
+        .hint {
+            font-size: 11px;
+            color: var(--text-dim);
+            font-style: italic;
+        }
+
+        .hint b { color: var(--danger); }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">JIZJAZ CLICKJACK</div>
+    
+    <div class="input-group">
+        <input type="text" id="target-url" placeholder="Enter target URL (e.g. 192.168.1.1)">
+        <button onclick="launchTest()">Launch</button>
+    </div>
+
+    <div class="control-group">
+        <span>Overlay Opacity: <b id="opacity-val">50</b>%</span>
+        <input type="range" id="opacity-slider" min="0" max="100" value="50" oninput="updateOpacity(this.value)">
+    </div>
+
+    <div class="control-group">
+        <label style="cursor: pointer; display: flex; align-items: center; gap: 6px;">
+            <input type="checkbox" id="pass-clicks" checked onchange="toggleClicks(this.checked)"> Click Through
+        </label>
+    </div>
+
+    <div class="hint"><b>[!]</b> ALIGN BAIT OVER TARGET <b>[!]</b></div>
+</header>
+
+<main id="main-container">
+    <div class="stage" id="main-stage">
+        <!-- DRAGGABLE BAIT LAYER -->
+        <div id="draggable-bait">
+            <div class="fake-button" id="visual-bait">CLAIM REWARD</div>
+            <span class="helper-text">DRAG TO ALIGN</span>
+        </div>
+
+        <!-- Victim Layer (Bottom) -->
+        <iframe id="target-frame" src="about:blank"></iframe>
+    </div>
+</main>
+
+<footer>
+    <div>SYSTEM_STATUS: <span id="status-text" class="status-ready">READY</span></div>
+    <div>COORDINATES: <span id="coords-text" style="color: var(--text)">X: 50, Y: 50</span></div>
+    <div>DEVELOPED BY: <span style="color: var(--primary)">alif-cybersec</span></div>
+</footer>
+
+<script>
+    // --- Draggable Logic ---
+    const bait = document.getElementById("draggable-bait");
+    const stage = document.getElementById("main-stage");
+    const coordsText = document.getElementById("coords-text");
+    let isDragging = false;
+    let offset = { x: 0, y: 0 };
+
+    bait.addEventListener("mousedown", (e) => {
+        // Only drag if clicking the dashed border area, OR if click-through is OFF
+        isDragging = true;
+        offset.x = e.clientX - bait.offsetLeft;
+        offset.y = e.clientY - bait.offsetTop;
+        bait.style.borderColor = "#fbbf24";
+        bait.style.backgroundColor = "rgba(251, 191, 36, 0.1)";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+        
+        let newX = e.clientX - offset.x;
+        let newY = e.clientY - offset.y;
+
+        // Boundary checks
+        if (newX < 0) newX = 0;
+        if (newY < 0) newY = 0;
+        if (newX + bait.offsetWidth > stage.offsetWidth) newX = stage.offsetWidth - bait.offsetWidth;
+        if (newY + bait.offsetHeight > stage.offsetHeight) newY = stage.offsetHeight - bait.offsetHeight;
+
+        bait.style.left = newX + "px";
+        bait.style.top = newY + "px";
+        coordsText.innerText = `X: ${Math.round(newX)}, Y: ${Math.round(newY)}`;
+    });
+
+    document.addEventListener("mouseup", () => {
+        isDragging = false;
+        bait.style.borderColor = "#10b981";
+        bait.style.backgroundColor = "rgba(16, 185, 129, 0.05)";
+    });
+
+    // --- Control Logic ---
+    function launchTest() {
+        let url = document.getElementById('target-url').value;
+        const frame = document.getElementById('target-frame');
+        const status = document.getElementById('status-text');
+
+        if (!url) return;
+        if (!url.startsWith('http')) url = 'http://' + url;
+
+        status.innerText = "LOADING...";
+        status.className = "status-loading";
+        frame.src = url;
+        frame.onload = () => { 
+            status.innerText = "ACTIVE"; 
+            status.className = "status-ready";
+        };
+    }
+
+    function updateOpacity(val) {
+        document.getElementById('target-frame').style.opacity = val / 100;
+        document.getElementById('opacity-val').innerText = val;
+    }
+
+    function toggleClicks(isPass) {
+        // If Click Through is ON, bait (the red button part) doesn't capture clicks
+        // but we keep the DASHED area interactive for dragging.
+        // The .fake-button has pointer-events: none by default.
+    }
+
+    document.getElementById('target-url').addEventListener("keyup", (e) => { if (e.key === "Enter") launchTest(); });
+</script>
+
+</body>
+</html>

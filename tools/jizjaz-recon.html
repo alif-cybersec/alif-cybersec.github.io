@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JIZJAZ-RECON | Automated Reconnaissance Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #020617; /* Slate 950 */
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+        }
+        .terminal-font {
+            font-family: 'Fira Code', monospace;
+        }
+        .glow-text {
+            text-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+        }
+        .glow-border {
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        .accent-emerald {
+            color: #10b981;
+        }
+        .bg-emerald-blur {
+            background: radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+        }
+        pre {
+            background-color: #0f172a;
+            border-left: 4px solid #10b981;
+        }
+    </style>
+</head>
+<body class="selection:bg-emerald-500/30 selection:text-emerald-300">
+
+    <!-- Background Decoration -->
+    <div class="fixed inset-0 bg-emerald-blur pointer-events-none"></div>
+
+    <div class="max-w-4xl mx-auto px-6 py-12 relative z-10">
+        <!-- Header -->
+        <header class="text-center mb-16">
+            <div class="inline-block px-3 py-1 border border-emerald-500/50 rounded-full text-xs font-bold uppercase tracking-widest accent-emerald mb-4 glow-text">
+                Security Suite v2.0
+            </div>
+            <h1 class="text-4xl md:text-6xl font-black mb-4 tracking-tight">
+                JIZJAZ-<span class="accent-emerald">RECON</span>
+            </h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+                Automated reconnaissance and vulnerability discovery engine designed for security professionals and red team operators.
+            </p>
+        </header>
+
+        <!-- Usage Section -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+                <span class="w-8 h-8 bg-emerald-500/20 rounded flex items-center justify-center mr-3 accent-emerald">01</span>
+                Quick Usage
+            </h2>
+            <div class="glow-border rounded-xl p-6 bg-slate-900/50 backdrop-blur-sm">
+                <p class="mb-4 text-slate-300">Execute the script by providing a target domain or IP address. Ensure you have the necessary permissions before scanning.</p>
+                <div class="terminal-font p-4 rounded bg-black/60 text-emerald-400 text-sm glow-text">
+                    $ ./jizjaz-recon.sh <span class="text-white">&lt;target_domain_or_ip&gt;</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Stages -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold mb-8 flex items-center">
+                <span class="w-8 h-8 bg-emerald-500/20 rounded flex items-center justify-center mr-3 accent-emerald">02</span>
+                Execution Flow
+            </h2>
+
+            <!-- Stage 1 -->
+            <div class="relative pl-8 pb-12 border-l-2 border-emerald-500/20">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]"></div>
+                <h3 class="text-xl font-bold mb-2 accent-emerald">Advanced Port Discovery</h3>
+                <p class="text-slate-400 mb-4">The engine initiates an intensive Nmap scan targeting the top 1000 most common ports. It performs service version detection to identify running daemons.</p>
+                <div class="bg-slate-900/80 rounded p-3 text-xs terminal-font text-slate-300">
+                    nmap -sV --top-ports 1000 [TARGET] -oN output/nmap_results.txt
+                </div>
+            </div>
+
+            <!-- Stage 2 -->
+            <div class="relative pl-8 pb-12 border-l-2 border-emerald-500/20">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]"></div>
+                <h3 class="text-xl font-bold mb-2 accent-emerald">Directory Fuzzing (FFUF)</h3>
+                <p class="text-slate-400 mb-4">Utilizes high-speed fuzzing with FFUF to uncover hidden directories and sensitive files. Results are filtered and summarized into a visual table using <code class="accent-emerald">jq</code>.</p>
+                <div class="bg-slate-900/80 rounded p-3 text-xs terminal-font text-slate-300">
+                    ffuf -u http://[TARGET]/FUZZ -w [WORDLIST] -mc 200,301,403
+                </div>
+            </div>
+
+            <!-- Stage 3 -->
+            <div class="relative pl-8 pb-12 border-l-2 border-emerald-500/20">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]"></div>
+                <h3 class="text-xl font-bold mb-2 accent-emerald">Endpoint Spidering (Katana)</h3>
+                <p class="text-slate-400 mb-4">Deploys the Katana crawler to map out all available endpoints, uncovering JavaScript files, API routes, and static assets often missed by traditional fuzzers.</p>
+                <div class="bg-slate-900/80 rounded p-3 text-xs terminal-font text-slate-300">
+                    katana -u http://[TARGET] -o output/endpoints.txt
+                </div>
+            </div>
+
+            <!-- Stage 4 -->
+            <div class="relative pl-8 border-l-2 border-emerald-500/20">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]"></div>
+                <h3 class="text-xl font-bold mb-2 accent-emerald">SSL/TLS Security Audit</h3>
+                <p class="text-slate-400 mb-4">A dedicated phase for analyzing SSL configurations. Checks for weak ciphers, Heartbleed, and CCS Injection vulnerabilities using specialized Nmap scripts.</p>
+                <div class="bg-slate-900/80 rounded p-3 text-xs terminal-font text-slate-300">
+                    nmap --script ssl-enum-ciphers,ssl-heartbleed -p 443 [TARGET]
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="mb-16 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="p-6 rounded-xl bg-slate-900/40 border border-slate-800 hover:border-emerald-500/40 transition-colors">
+                <div class="text-emerald-400 mb-3 font-bold">Structured Output</div>
+                <p class="text-sm text-slate-400 text-pretty">Automatically creates organized workspace directories for each target, ensuring all scan results are easy to manage and analyze.</p>
+            </div>
+            <div class="p-6 rounded-xl bg-slate-900/40 border border-slate-800 hover:border-emerald-500/40 transition-colors">
+                <div class="text-emerald-400 mb-3 font-bold">Visual Summaries</div>
+                <p class="text-sm text-slate-400 text-pretty">Integrated with <code class="text-emerald-300">jq</code> and <code class="text-emerald-300">column</code> to provide real-time, readable summaries of high-value endpoints directly in your terminal.</p>
+            </div>
+        </section>
+
+        <!-- Footer / Download -->
+        <footer class="text-center pt-12 border-t border-slate-800">
+            <p class="text-slate-500 text-sm mb-8 italic">Automating reconnaissance, one target at a time.</p>
+            <a href="https://github.com/alif-cybersec/jizjaz-recon/" class="inline-flex items-center px-8 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg transition-all transform hover:scale-105 shadow-lg shadow-emerald-500/20">
+                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                Download on GitHub
+            </a>
+            <div class="mt-12 text-slate-600 text-xs terminal-font uppercase tracking-widest">
+                Developed by alif-cybersec
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
