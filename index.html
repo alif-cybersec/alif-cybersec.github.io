@@ -11,6 +11,7 @@
             font-family: 'JetBrains Mono', monospace;
             background-color: #0f172a;
             color: #e2e8f0;
+            overflow-x: hidden;
         }
         .text-accent { color: #10b981; }
         .bg-accent { background-color: #10b981; }
@@ -22,6 +23,36 @@
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #10b981; }
+
+        /* Scroll Reveal Base */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 3D Tilt Container */
+        .tilt-card {
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        /* Particle Canvas */
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.8;
+        }
     </style>
     <script>
         tailwind.config = {
@@ -60,8 +91,9 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="min-h-screen flex items-center justify-center pt-20 px-6">
-        <div class="max-w-4xl w-full text-center md:text-left md:flex items-center gap-12">
+    <section class="relative min-h-screen flex items-center justify-center pt-20 px-6 overflow-hidden">
+        <canvas id="particle-canvas"></canvas>
+        <div class="relative z-10 max-w-4xl w-full text-center md:text-left md:flex items-center gap-12 reveal">
             <div class="flex-shrink-0 mb-8 md:mb-0 flex justify-center">
                 <div class="relative group">
                     <div class="absolute -inset-1 bg-accent rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
@@ -88,7 +120,7 @@
 
     <!-- About Me Section -->
     <section id="about" class="py-24 bg-slate-900/50">
-        <div class="max-w-4xl mx-auto px-6">
+        <div class="max-w-4xl mx-auto px-6 reveal">
             <h2 class="text-3xl font-bold mb-12 flex items-center">
                 <span class="text-accent mr-4">01.</span> About Me
                 <div class="h-px bg-slate-700 flex-grow ml-6"></div>
@@ -104,7 +136,7 @@
 
             <!-- Achievement Highlight -->
             <div class="mt-12 flex justify-center">
-                <div class="relative group max-w-2xl w-full">
+                <div class="relative group max-w-2xl w-full tilt-card">
                     <div class="absolute -inset-1 bg-accent rounded-lg blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
                     <div class="relative bg-slate-900 border border-slate-800 rounded-lg overflow-hidden shadow-2xl">
                         <div class="bg-slate-800/50 px-4 py-2 border-b border-slate-700 flex items-center gap-2">
@@ -127,7 +159,7 @@
 
     <!-- Experience Section -->
     <section id="experience" class="py-24">
-        <div class="max-w-4xl mx-auto px-6">
+        <div class="max-w-4xl mx-auto px-6 reveal">
             <h2 class="text-3xl font-bold mb-12 flex items-center">
                 <span class="text-accent mr-4">02.</span> Experience
                 <div class="h-px bg-slate-700 flex-grow ml-6"></div>
@@ -175,30 +207,78 @@
 
     <!-- Technical Skills Section -->
     <section id="skills" class="py-24 bg-slate-900/50">
-        <div class="max-w-4xl mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold mb-12 flex items-center justify-center">
+        <div class="max-w-6xl mx-auto px-6 reveal">
+            <h2 class="text-3xl font-bold mb-16 flex items-center justify-center">
                 <span class="text-accent mr-4">03.</span> Tech Stack
             </h2>
-            <div class="flex flex-wrap justify-center gap-3">
-                <!-- Skill Badges -->
-                <span class="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-md hover:border-accent transition cursor-default">NMAP</span>
-                <span class="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-md hover:border-accent transition cursor-default">Burp Suite</span>
-                <span class="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-md hover:border-accent transition cursor-default">Nessus</span>
-                <span class="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-md hover:border-accent transition cursor-default">FFUF</span>
-                <span class="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-md hover:border-accent transition cursor-default">SQLmap</span>
-                <span class="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-md hover:border-accent transition cursor-default">Frida</span>
-                <span class="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-md hover:border-accent transition cursor-default">ADB</span>
-                <span class="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-md hover:border-accent transition cursor-default">Jadx-GUI</span>
-                <span class="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-md hover:border-accent transition cursor-default">Ligolo-ng</span>
-                <span class="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-md hover:border-accent transition cursor-default">Impacket Suite</span>
-                <span class="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-md hover:border-accent transition cursor-default">Postman</span>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+                <!-- NMAP -->
+                <div class="group flex flex-col items-center p-6 bg-slate-900 border border-slate-800 rounded-2xl hover:border-accent/40 transition-all duration-300 hover:-translate-y-2">
+                    <img src="https://cdn.simpleicons.org/nmap/10b981" alt="NMAP" class="w-12 h-12 mb-4 group-hover:scale-110 transition duration-300">
+                    <span class="text-slate-400 font-bold text-sm tracking-widest group-hover:text-accent transition">NMAP</span>
+                </div>
+
+                <!-- BURP SUITE -->
+                <div class="group flex flex-col items-center p-6 bg-slate-900 border border-slate-800 rounded-2xl hover:border-accent/40 transition-all duration-300 hover:-translate-y-2">
+                    <img src="https://cdn.simpleicons.org/burpsuite/10b981" alt="Burp Suite" class="w-12 h-12 mb-4 group-hover:scale-110 transition duration-300">
+                    <span class="text-slate-400 font-bold text-sm tracking-widest group-hover:text-accent transition">BURP SUITE</span>
+                </div>
+
+                <!-- NESSUS -->
+                <div class="group flex flex-col items-center p-6 bg-slate-900 border border-slate-800 rounded-2xl hover:border-accent/40 transition-all duration-300 hover:-translate-y-2">
+                    <img src="https://cdn.simpleicons.org/nessus/10b981" alt="Nessus" class="w-12 h-12 mb-4 group-hover:scale-110 transition duration-300">
+                    <span class="text-slate-400 font-bold text-sm tracking-widest group-hover:text-accent transition">NESSUS</span>
+                </div>
+
+                <!-- POSTMAN -->
+                <div class="group flex flex-col items-center p-6 bg-slate-900 border border-slate-800 rounded-2xl hover:border-accent/40 transition-all duration-300 hover:-translate-y-2">
+                    <img src="https://cdn.simpleicons.org/postman/10b981" alt="Postman" class="w-12 h-12 mb-4 group-hover:scale-110 transition duration-300">
+                    <span class="text-slate-400 font-bold text-sm tracking-widest group-hover:text-accent transition">POSTMAN</span>
+                </div>
+
+                <!-- METASPLOIT -->
+                <div class="group flex flex-col items-center p-6 bg-slate-900 border border-slate-800 rounded-2xl hover:border-accent/40 transition-all duration-300 hover:-translate-y-2">
+                    <img src="https://cdn.simpleicons.org/metasploit/10b981" alt="Metasploit" class="w-12 h-12 mb-4 group-hover:scale-110 transition duration-300">
+                    <span class="text-slate-400 font-bold text-sm tracking-widest group-hover:text-accent transition">METASPLOIT</span>
+                </div>
+
+                <!-- KALI LINUX -->
+                <div class="group flex flex-col items-center p-6 bg-slate-900 border border-slate-800 rounded-2xl hover:border-accent/40 transition-all duration-300 hover:-translate-y-2">
+                    <img src="https://cdn.simpleicons.org/kalilinux/10b981" alt="Kali Linux" class="w-12 h-12 mb-4 group-hover:scale-110 transition duration-300">
+                    <span class="text-slate-400 font-bold text-sm tracking-widest group-hover:text-accent transition">KALI LINUX</span>
+                </div>
+
+                <!-- DOCKER -->
+                <div class="group flex flex-col items-center p-6 bg-slate-900 border border-slate-800 rounded-2xl hover:border-accent/40 transition-all duration-300 hover:-translate-y-2">
+                    <img src="https://cdn.simpleicons.org/docker/10b981" alt="Docker" class="w-12 h-12 mb-4 group-hover:scale-110 transition duration-300">
+                    <span class="text-slate-400 font-bold text-sm tracking-widest group-hover:text-accent transition">DOCKER</span>
+                </div>
+
+                <!-- PYTHON -->
+                <div class="group flex flex-col items-center p-6 bg-slate-900 border border-slate-800 rounded-2xl hover:border-accent/40 transition-all duration-300 hover:-translate-y-2">
+                    <img src="https://cdn.simpleicons.org/python/10b981" alt="Python" class="w-12 h-12 mb-4 group-hover:scale-110 transition duration-300">
+                    <span class="text-slate-400 font-bold text-sm tracking-widest group-hover:text-accent transition">PYTHON</span>
+                </div>
+
+                <!-- LINUX -->
+                <div class="group flex flex-col items-center p-6 bg-slate-900 border border-slate-800 rounded-2xl hover:border-accent/40 transition-all duration-300 hover:-translate-y-2">
+                    <img src="https://cdn.simpleicons.org/linux/10b981" alt="Linux" class="w-12 h-12 mb-4 group-hover:scale-110 transition duration-300">
+                    <span class="text-slate-400 font-bold text-sm tracking-widest group-hover:text-accent transition">LINUX</span>
+                </div>
+
+                <!-- GITHUB -->
+                <div class="group flex flex-col items-center p-6 bg-slate-900 border border-slate-800 rounded-2xl hover:border-accent/40 transition-all duration-300 hover:-translate-y-2">
+                    <img src="https://cdn.simpleicons.org/github/10b981" alt="GitHub" class="w-12 h-12 mb-4 group-hover:scale-110 transition duration-300">
+                    <span class="text-slate-400 font-bold text-sm tracking-widest group-hover:text-accent transition">GITHUB</span>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Certification Gallery -->
     <section id="certifications" class="py-24">
-        <div class="max-w-6xl mx-auto px-6">
+        <div class="max-w-6xl mx-auto px-6 reveal">
             <h2 class="text-3xl font-bold mb-12 flex items-center">
                 <span class="text-accent mr-4">04.</span> Certifications
                 <div class="h-px bg-slate-700 flex-grow ml-6"></div>
@@ -206,7 +286,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 
                 <!-- CEH -->
-                <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden group hover:border-accent/50 transition duration-300">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden group hover:border-accent/50 transition duration-300 tilt-card">
                     <div class="h-48 overflow-hidden bg-slate-800">
                         <img src="CEH.jpeg" alt="CEH Certification" class="w-full h-full object-contain p-4 group-hover:scale-105 transition duration-500">
                     </div>
@@ -220,7 +300,7 @@
                 </div>
 
                 <!-- eJPT -->
-                <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden group hover:border-accent/50 transition duration-300">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden group hover:border-accent/50 transition duration-300 tilt-card">
                     <div class="h-48 overflow-hidden bg-slate-800">
                         <img src="eJPT.jpeg" alt="eJPT Certification" class="w-full h-full object-contain p-4 group-hover:scale-105 transition duration-500">
                     </div>
@@ -234,7 +314,7 @@
                 </div>
 
                 <!-- CRTA -->
-                <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden group hover:border-accent/50 transition duration-300">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden group hover:border-accent/50 transition duration-300 tilt-card">
                     <div class="h-48 overflow-hidden bg-slate-800">
                         <img src="CRTA.jpeg" alt="CRTA Certification" class="w-full h-full object-contain p-4 group-hover:scale-105 transition duration-500">
                     </div>
@@ -248,7 +328,7 @@
                 </div>
 
                 <!-- Course-Net -->
-                <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden group hover:border-accent/50 transition duration-300">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden group hover:border-accent/50 transition duration-300 tilt-card">
                     <div class="h-48 overflow-hidden bg-slate-800">
                         <img src="coursenet.jpeg" alt="Course-Net Certification" class="w-full h-full object-contain p-4 group-hover:scale-105 transition duration-500">
                     </div>
@@ -267,14 +347,14 @@
 
     <!-- Pentest Tools Section -->
     <section id="tools" class="py-24 bg-slate-900/50">
-        <div class="max-w-6xl mx-auto px-6">
+        <div class="max-w-6xl mx-auto px-6 reveal">
             <h2 class="text-3xl font-bold mb-12 flex items-center">
                 <span class="text-accent mr-4">05.</span> Pentest Tools
                 <div class="h-px bg-slate-700 flex-grow ml-6"></div>
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Clickjack Suite -->
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-8 group hover:border-accent/50 transition duration-300 relative overflow-hidden">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-8 group hover:border-accent/50 transition duration-300 relative overflow-hidden tilt-card">
                     <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                         <svg class="w-24 h-24 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                     </div>
@@ -289,7 +369,7 @@
                 </div>
 
                 <!-- JIZJAZ-CRAWL -->
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-8 group hover:border-accent/50 transition duration-300 relative overflow-hidden">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-8 group hover:border-accent/50 transition duration-300 relative overflow-hidden tilt-card">
                     <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                         <svg class="w-24 h-24 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </div>
@@ -304,7 +384,7 @@
                 </div>
 
                 <!-- JIZJAZ-RECON -->
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-8 group hover:border-accent/50 transition duration-300 relative overflow-hidden">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-8 group hover:border-accent/50 transition duration-300 relative overflow-hidden tilt-card">
                     <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                         <svg class="w-24 h-24 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </div>
@@ -319,7 +399,7 @@
                 </div>
 
                 <!-- JIZJAZ-SOSGHOST -->
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-8 group hover:border-accent/50 transition duration-300 relative overflow-hidden">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-8 group hover:border-accent/50 transition duration-300 relative overflow-hidden tilt-card">
                     <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                         <svg class="w-24 h-24 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                     </div>
@@ -337,7 +417,7 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-32 px-6">
+    <section id="contact" class="py-32 px-6 reveal">
         <div class="max-w-xl mx-auto text-center">
             <h2 class="text-accent font-bold mb-4 tracking-widest text-sm uppercase">> Let's Connect</h2>
             <h2 class="text-4xl md:text-5xl font-bold mb-8 text-white">Get In Touch</h2>
@@ -357,6 +437,7 @@
     </footer>
 
     <script>
+        // --- Typing Effect ---
         const textElement = document.getElementById('typing-text');
         const roles = [
             'Offensive Security Professional',
@@ -384,7 +465,7 @@
 
             if (!isDeleting && charIndex === currentRole.length) {
                 isDeleting = true;
-                typeSpeed = 2000; // Pause at end
+                typeSpeed = 2000;
             } else if (isDeleting && charIndex === 0) {
                 isDeleting = false;
                 roleIndex = (roleIndex + 1) % roles.length;
@@ -394,7 +475,104 @@
             setTimeout(type, typeSpeed);
         }
 
-        document.addEventListener('DOMContentLoaded', type);
+        // --- Scroll Reveal ---
+        const revealCallback = (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        };
+        const revealObserver = new IntersectionObserver(revealCallback, { threshold: 0.1 });
+
+        // --- 3D Tilt Effect ---
+        function initTilt() {
+            const cards = document.querySelectorAll('.tilt-card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (centerY - y) / 10;
+                    const rotateY = (x - centerX) / 10;
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                });
+            });
+        }
+
+        // --- Network Particles ---
+        function initParticles() {
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.vy = (Math.random() - 0.5) * 0.5;
+                    this.radius = Math.random() * 2;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = '#10b981';
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < 100; i++) particles.push(new Particle());
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach((p, i) => {
+                    p.update();
+                    p.draw();
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const p2 = particles[j];
+                        const dx = p.x - p2.x;
+                        const dy = p.y - p2.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 150) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = `rgba(16, 185, 129, ${0.8 - dist / 150})`;
+                            ctx.lineWidth = 0.8;
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.stroke();
+                        }
+                    }
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            type();
+            initParticles();
+            initTilt();
+            document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+        });
     </script>
 
 </body>
