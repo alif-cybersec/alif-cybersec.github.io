@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JIZJAZ-SOSGHOST | Broken Social Media Hijacker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #020617; /* Slate 950 */
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+        }
+        .terminal-font {
+            font-family: 'Fira Code', monospace;
+        }
+        .glow-text {
+            text-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+        }
+        .glow-border {
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        .accent-emerald {
+            color: #10b981;
+        }
+        .bg-emerald-blur {
+            background: radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+        }
+        pre {
+            background-color: #0f172a;
+            border-left: 4px solid #10b981;
+        }
+    </style>
+</head>
+<body class="selection:bg-emerald-500/30 selection:text-emerald-300">
+
+    <!-- Background Decoration -->
+    <div class="fixed inset-0 bg-emerald-blur pointer-events-none"></div>
+
+    <div class="max-w-4xl mx-auto px-6 py-12 relative z-10">
+        <!-- Header -->
+        <header class="text-center mb-16">
+            <div class="inline-block px-3 py-1 border border-emerald-500/50 rounded-full text-xs font-bold uppercase tracking-widest accent-emerald mb-4 glow-text">
+                Security Suite v2.6
+            </div>
+            <h1 class="text-4xl md:text-6xl font-black mb-4 tracking-tight">
+                JIZJAZ-<span class="accent-emerald">SOSGHOST</span>
+            </h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+                Alat pendeteksi Broken Social Media Link (BSML) yang canggih dengan fitur Stealth Mode dan Deep Inspection untuk mengidentifikasi potensi pembajakan akun (hijacking).
+            </p>
+        </header>
+
+        <!-- Usage Section -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+                <span class="w-8 h-8 bg-emerald-500/20 rounded flex items-center justify-center mr-3 accent-emerald">01</span>
+                Penggunaan Cepat
+            </h2>
+            <div class="glow-border rounded-xl p-6 bg-slate-900/50 backdrop-blur-sm">
+                <p class="mb-4 text-slate-300">Jalankan skrip dengan memberikan URL target. Alat ini akan merayapi halaman untuk mencari link media sosial dan memverifikasi status ketersediaan akun tersebut.</p>
+                <div class="terminal-font p-4 rounded bg-black/60 text-emerald-400 text-sm glow-text">
+                    $ python3 jizjaz_sosghost.py -u <span class="text-white">https://target-website.com</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Stages -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold mb-8 flex items-center">
+                <span class="w-8 h-8 bg-emerald-500/20 rounded flex items-center justify-center mr-3 accent-emerald">02</span>
+                Fitur Utama
+            </h2>
+
+            <!-- Feature 1 -->
+            <div class="relative pl-8 pb-12 border-l-2 border-emerald-500/20">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]"></div>
+                <h3 class="text-xl font-bold mb-2 accent-emerald">Deep Inspection (Soft 404 Detection)</h3>
+                <p class="text-slate-400 mb-4">Tidak hanya mengandalkan kode status HTTP, alat ini menganalisis konten halaman (Title & Keywords) untuk mendeteksi profil yang sudah dihapus namun tetap memberikan respons kode status 200 (Soft 404).</p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="relative pl-8 pb-12 border-l-2 border-emerald-500/20">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]"></div>
+                <h3 class="text-xl font-bold mb-2 accent-emerald">Stealth Mode (Evasion)</h3>
+                <p class="text-slate-400 mb-4">Menggunakan delay acak (1.5s - 3.5s) dan browser headers yang menyerupai perilaku manusia untuk menghindari deteksi anti-bot pada platform media sosial besar.</p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="relative pl-8 border-l-2 border-emerald-500/20">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]"></div>
+                <h3 class="text-xl font-bold mb-2 accent-emerald">Multi-Platform Support</h3>
+                <p class="text-slate-400 mb-4">Mendukung pemindaian otomatis untuk berbagai platform populer seperti Instagram, Facebook, GitHub, TikTok, LinkedIn, YouTube, Discord, dan Telegram.</p>
+            </div>
+        </section>
+
+        <!-- Terminal Simulation -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+                <span class="w-8 h-8 bg-emerald-500/20 rounded flex items-center justify-center mr-3 accent-emerald">03</span>
+                Simulasi Terminal
+            </h2>
+            <div class="glow-border rounded-xl overflow-hidden bg-slate-950">
+                <div class="bg-slate-900 px-4 py-2 flex items-center gap-2 border-b border-slate-800">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    <span class="ml-2 text-xs text-slate-500 terminal-font">python3 — jizjaz_sosghost.py</span>
+                </div>
+                <div class="p-6 terminal-font text-sm leading-relaxed">
+                    <div class="text-cyan-400">[*] Menjelajahi (Crawling): https://target-perusahaan.id...</div>
+                    <div class="mt-2 text-yellow-400">[*] Menunggu 2.45s (Stealth Mode)... checking Instagram</div>
+                    <div class="text-emerald-400">Instagram      | ALIVE (HTTP 200 & Verified)     | https://instagram.com/target_resmi</div>
+                    
+                    <div class="mt-2 text-yellow-400">[*] Menunggu 1.82s (Stealth Mode)... checking Twitter</div>
+                    <div class="text-red-400">Twitter        | VULNERABLE (404 Not Found)      | https://twitter.com/target_lama</div>
+                    
+                    <div class="mt-4 text-emerald-400 font-bold">[+] Scan Selesai! Menemukan 2 link media sosial.</div>
+                    <div class="text-red-500 font-bold">[!] PERINGATAN: Menemukan 1 link yang berpotensi HIJACKABLE!</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer / Download -->
+        <footer class="text-center pt-12 border-t border-slate-800">
+            <p class="text-slate-500 text-sm mb-8 italic">Mencegah pengambilalihan akun melalui link media sosial yang usang.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="../index.html" class="inline-flex items-center px-6 py-3 border border-emerald-500/50 text-emerald-400 font-bold rounded-lg hover:bg-emerald-500/10 transition-all">
+                    Kembali ke Dashboard
+                </a>
+                <a href="https://github.com/alif-cybersec/jizjaz-sosghost" class="inline-flex items-center px-8 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg transition-all transform hover:scale-105 shadow-lg shadow-emerald-500/20">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    Lihat di GitHub
+                </a>
+            </div>
+            <div class="mt-12 text-slate-600 text-xs terminal-font uppercase tracking-widest">
+                Dikembangkan oleh alif-cybersec
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
