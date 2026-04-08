@@ -85,6 +85,7 @@
                 <a href="#skills" class="hover:text-accent transition">Skills</a>
                 <a href="#certifications" class="hover:text-accent transition">Certifications</a>
                 <a href="#tools" class="hover:text-accent transition">Tools</a>
+                <a href="#writeups" class="hover:text-accent transition">Writeups</a>
                 <a href="#contact" class="hover:text-accent transition">Contact</a>
             </div>
         </div>
@@ -414,6 +415,57 @@
                     <a href="tools/jizjaz-sosghost.html" target="_blank" class="inline-flex items-center text-accent font-bold hover:underline">
                         Buka Alat 
                         <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Writeups Section -->
+    <section id="writeups" class="py-24">
+        <div class="max-w-6xl mx-auto px-6 reveal">
+            <h2 class="text-3xl font-bold mb-12 flex items-center">
+                <span class="text-accent mr-4">06.</span> Security Research
+                <div class="h-px bg-slate-700 flex-grow ml-6"></div>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Case Study 1 -->
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-8 group hover:border-accent/50 transition duration-300 relative overflow-hidden tilt-card">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <!-- Chain Icon -->
+                        <svg class="w-20 h-24 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                    </div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="px-2 py-1 bg-accent/10 border border-accent/20 text-accent text-[10px] font-bold uppercase rounded">Exploitation Chain</span>
+                        <span class="text-slate-600 text-xs font-mono">Case #001</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 group-hover:text-accent transition">API to Root: Multi-Stage Audit</h3>
+                    <p class="text-slate-400 mb-6 text-sm leading-relaxed">
+                        Analisis teknis mengenai bagaimana kebocoran API Key dapat dieksploitasi untuk pengintaian (OSINT) hingga pengambilalihan kontrol server secara penuh.
+                    </p>
+                    <a href="writeups/api-to-root.html" target="_blank" class="inline-flex items-center text-accent text-sm font-bold hover:underline">
+                        Baca Case Study
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </a>
+                </div>
+
+                <!-- Case Study 2 -->
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-8 group hover:border-accent/50 transition duration-300 relative overflow-hidden tilt-card">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <!-- Chip Icon -->
+                        <svg class="w-20 h-24 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>
+                    </div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="px-2 py-1 bg-accent/10 border border-accent/20 text-accent text-[10px] font-bold uppercase rounded">Binary Exploitation</span>
+                        <span class="text-slate-600 text-xs font-mono">Case #002</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4 group-hover:text-accent transition">ASLR Bypass via Ret2Libc</h3>
+                    <p class="text-slate-400 mb-6 text-sm leading-relaxed">
+                        Demonstrasi eksploitasi memori pada biner sistem untuk menembus proteksi modern (ASLR & NX) guna mendapatkan hak akses Root.
+                    </p>
+                    <a href="writeups/aslr-bypass.html" target="_blank" class="inline-flex items-center text-accent text-sm font-bold hover:underline">
+                        Baca Case Study
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                     </a>
                 </div>
             </div>
