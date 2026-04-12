@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JIZJAZ-REPORT | Proprietary Reporting Automation</title>
+    <link rel="icon" type="image/x-icon" href="../fav.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --accent: #10b981; --dark: #020617; }
+        body { background-color: var(--dark); color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        .terminal-font { font-family: 'Fira Code', monospace; }
+        .glow-text { text-shadow: 0 0 10px rgba(16, 185, 129, 0.6); }
+        .glow-border { border: 1px solid rgba(16, 185, 129, 0.3); box-shadow: 0 0 20px rgba(16, 185, 129, 0.1); }
+        .accent-emerald { color: var(--accent); }
+        .bg-emerald-blur { background: radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 70%); }
+        .img-container { background: #010409; border: 1px solid #30363d; border-radius: 0.75rem; overflow: hidden; margin-bottom: 2rem; transition: all 0.3s ease; }
+        .img-container:hover { border-color: var(--accent); transform: translateY(-5px); }
+        .img-label { font-family: 'Fira Code', monospace; font-size: 0.7rem; color: #8b949e; padding: 0.5rem 1rem; border-bottom: 1px solid #30363d; background: #0d1117; display: flex; align-items: center; gap: 0.5rem; }
+    </style>
+</head>
+<body class="selection:bg-emerald-500/30 selection:text-emerald-300">
+
+    <div class="fixed inset-0 bg-emerald-blur pointer-events-none"></div>
+
+    <div class="max-w-5xl mx-auto px-6 py-12 relative z-10">
+        <!-- Header -->
+        <header class="text-center mb-16">
+            <div class="inline-block px-3 py-1 border border-emerald-500/50 rounded-full text-xs font-bold uppercase tracking-widest accent-emerald mb-4 glow-text">
+                Enterprise Automation Platform
+            </div>
+            <h1 class="text-4xl md:text-6xl font-black mb-4 tracking-tight">
+                JIZJAZ-<span class="accent-emerald">REPORT</span>
+            </h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto italic">
+                "Turning raw technical findings into executive-grade audit intelligence."
+            </p>
+        </header>
+
+        <!-- Status Box -->
+        <div class="bg-slate-900/80 border-l-4 border-accent p-6 mb-16 rounded-r-xl">
+            <div class="flex items-center gap-3 mb-2 text-yellow-500">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                <span class="font-bold uppercase text-sm tracking-widest">Platform Status: Proprietary</span>
+            </div>
+            <p class="text-slate-400 text-sm">
+                JIZJAZ-REPORT adalah platform internal eksklusif yang dirancang untuk menjamin kualitas dan kecepatan pelaporan audit. Platform ini mengotomatiskan alur kerja dari manajemen proyek hingga pembuatan dokumen final.
+            </p>
+        </div>
+
+        <!-- 01: Admin Dashboard -->
+        <section class="mb-24">
+            <h2 class="text-2xl font-bold mb-8 flex items-center">
+                <span class="w-8 h-8 bg-emerald-500/20 rounded flex items-center justify-center mr-3 accent-emerald">01</span>
+                Centralized Command Center
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="order-2 lg:order-1">
+                    <p class="text-slate-300 leading-relaxed text-lg">
+                        Dashboard admin berbasis Jazzmin yang dikustomisasi dengan skema warna <span class="text-white font-bold">Cyber-Dark</span>. Memudahkan monitoring semua audit aktif, library temuan, dan statistik kerentanan dalam satu layar secara efisien.
+                    </p>
+                </div>
+                <div class="img-container shadow-2xl order-1 lg:order-2">
+                    <div class="img-label"><div class="w-2 h-2 rounded-full bg-red-500"></div> dashboard-admin.png</div>
+                    <img src="dashboard-admin.png" alt="Admin Dashboard" class="w-full opacity-90">
+                </div>
+            </div>
+        </section>
+
+        <!-- 02: Halaman Depan -->
+        <section class="mb-24">
+            <h2 class="text-2xl font-bold mb-8 flex items-center">
+                <span class="w-8 h-8 bg-emerald-500/20 rounded flex items-center justify-center mr-3 accent-emerald">02</span>
+                Clean UI for Seamless Navigation
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="img-container shadow-2xl">
+                    <div class="img-label"><div class="w-2 h-2 rounded-full bg-yellow-500"></div> halamandepan.png</div>
+                    <img src="halamandepan.png" alt="Command Center Frontend" class="w-full opacity-90">
+                </div>
+                <div>
+                    <p class="text-slate-300 leading-relaxed text-lg">
+                        Tampilan antarmuka utama yang dibangun menggunakan <span class="text-white font-bold">Tailwind CSS</span> dengan desain yang sangat estetik. Dashboard ini berfungsi sebagai pusat navigasi untuk mengelola dan menampilkan seluruh <span class="text-white">proyek audit</span> yang pernah dikerjakan oleh <span class="accent-emerald font-bold">Pentester</span> secara terorganisir.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03: Project Analysis -->
+        <section class="mb-24">
+            <h2 class="text-2xl font-bold mb-8 flex items-center">
+                <span class="w-8 h-8 bg-emerald-500/20 rounded flex items-center justify-center mr-3 accent-emerald">03</span>
+                Data-Driven Audit Tracking
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="order-2 lg:order-1">
+                    <p class="text-slate-300 leading-relaxed text-lg">
+                        Panel manajemen proyek yang menampilkan <span class="text-white font-bold">Vulnerability Ledger</span>. Di sini, setiap temuan dianalisis secara mendalam berdasarkan skor <span class="text-accent font-bold">CVSS v3.1</span> untuk menentukan <span class="text-white">tingkat risiko</span> dan urgensi temuan secara akurat.
+                    </p>
+                </div>
+                <div class="img-container shadow-2xl order-1 lg:order-2">
+                    <div class="img-label"><div class="w-2 h-2 rounded-full bg-green-500"></div> halaman-project.png</div>
+                    <img src="halaman-project.png" alt="Project Analysis" class="w-full opacity-90">
+                </div>
+            </div>
+        </section>
+
+        <!-- 04: Findings Management -->
+        <section class="mb-24">
+            <h2 class="text-2xl font-bold mb-8 flex items-center">
+                <span class="w-8 h-8 bg-emerald-500/20 rounded flex items-center justify-center mr-3 accent-emerald">04</span>
+                Standardized Vulnerability Database
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="img-container shadow-2xl">
+                    <div class="img-label"><div class="w-2 h-2 rounded-full bg-cyan-500"></div> halamantambahtemuan.png</div>
+                    <img src="halamantambahtemuan.png" alt="Findings Management" class="w-full opacity-90">
+                </div>
+                <div>
+                    <p class="text-slate-300 leading-relaxed text-lg">
+                        Fitur pengelolaan temuan yang memungkinkan penggunaan kembali template kerentanan umum dari database internal. Proses ini mempercepat penulisan laporan secara signifikan tanpa mengurangi kedalaman detail teknis pada setiap temuan yang dilaporkan.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 05: Report Generation Engine -->
+        <section class="mb-24">
+            <h2 class="text-2xl font-bold mb-8 flex items-center">
+                <span class="w-8 h-8 bg-emerald-500/20 rounded flex items-center justify-center mr-3 accent-emerald">05</span>
+                Professional Output Engine
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="img-container">
+                    <div class="img-label">report_cover.pdf</div>
+                    <img src="cover-pdf.png" alt="Cover PDF" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition">
+                </div>
+                <div class="img-container">
+                    <div class="img-label">findings_detail.pdf</div>
+                    <img src="detail-pdfpoc.png" alt="Detail Temuan" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition">
+                </div>
+            </div>
+            <p class="text-slate-400 text-sm text-center italic">
+                Sistem secara otomatis menyusun laporan PDF/Docx dengan layout yang bersih, menyertakan bukti gambar (PoC), serta rekomendasi mitigasi yang komprehensif.
+            </p>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center pt-12 border-t border-slate-800">
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="../index.html" class="inline-flex items-center px-6 py-3 border border-emerald-500/50 text-emerald-400 font-bold rounded-lg hover:bg-emerald-500/10 transition-all">
+                    Kembali ke Dashboard
+                </a>
+                <div class="inline-flex items-center px-6 py-3 bg-slate-800 text-slate-500 font-bold rounded-lg cursor-not-allowed">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    Code: Private
+                </div>
+            </div>
+            <div class="mt-12 text-slate-600 text-xs terminal-font uppercase tracking-widest">
+                © 2026 Developed for Internal Professional Audits
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
