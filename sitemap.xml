@@ -6,22 +6,26 @@
     </url>
     <url>
         <loc>https://alif-cybersec.github.io/writeups/index.html</loc>
-        <priority>0.8</priority>
+        <priority>0.9</priority>
     </url>
     <url>
         <loc>https://alif-cybersec.github.io/writeups/api-to-root.html</loc>
-        <priority>0.7</priority>
+        <priority>0.8</priority>
     </url>
     <url>
         <loc>https://alif-cybersec.github.io/writeups/aslr-bypass.html</loc>
-        <priority>0.7</priority>
+        <priority>0.8</priority>
     </url>
     <url>
         <loc>https://alif-cybersec.github.io/writeups/web3-bridge-hijacking.html</loc>
-        <priority>0.7</priority>
+        <priority>0.8</priority>
     </url>
     <url>
         <loc>https://alif-cybersec.github.io/writeups/mssql-system-pwn.html</loc>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://alif-cybersec.github.io/tools/jizjaz-report.html</loc>
         <priority>0.7</priority>
     </url>
     <url>

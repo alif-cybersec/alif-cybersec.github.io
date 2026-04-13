@@ -80,6 +80,34 @@
             background-color: #fbbf24;
             box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
         }
+
+        /* Ribbon Style */
+        .ribbon-wrapper {
+            width: 150px;
+            height: 150px;
+            overflow: hidden;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            z-index: 30;
+        }
+        .ribbon {
+            font-size: 10px;
+            font-weight: 900;
+            color: #000;
+            text-transform: uppercase;
+            text-align: center;
+            line-height: 30px;
+            transform: rotate(45deg);
+            position: relative;
+            padding: 4px 0;
+            left: -5px;
+            top: 40px;
+            width: 220px;
+            background-color: #fbbf24;
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.8);
+            letter-spacing: 2px;
+        }
     </style>
     <script>
         tailwind.config = {
@@ -426,7 +454,7 @@
                         </p>
                         <a href="https://www.hacktrace-ranges.id/ranges/badge/offensive/15421" target="_blank" class="inline-flex items-center text-accent font-bold hover:underline gap-2">
                             Verify Badge Integrity
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            <svg class="w-4 h-4 fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                         </a>
                     </div>
                 </div>
@@ -465,8 +493,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- JIZJAZ-REPORT (Private) - FEATURED FIRST -->
                 <div class="lg:col-span-2 bg-slate-900 border-2 border-gold-glow rounded-3xl p-10 group hover:border-accent/50 transition duration-500 relative overflow-hidden shadow-2xl">
-                    <div class="absolute top-6 right-6 z-20">
-                        <span class="px-4 py-1.5 bg-gold-glow text-cyber-dark text-xs font-black rounded-full tracking-widest">EXCLUSIVE</span>
+                    <div class="ribbon-wrapper">
+                        <div class="ribbon">Proprietary</div>
                     </div>
                     <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
                         <!-- Report/Chart Icon -->
